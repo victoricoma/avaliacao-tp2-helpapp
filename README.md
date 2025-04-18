@@ -21,22 +21,23 @@ Implementar os repositórios `Category` e `Product` seguindo os padrões da Clea
 - [x] Migration aplicada com sucesso no Azure via `dotnet ef database update`
 
 ---
-🔧 Comandos utilizados
-bash
-Copiar
-Editar
-# Criação da migration
+#🔧 Comandos utilizados
+## Criação da migration
 dotnet ef migrations add Initial --project Infra.Data --startup-project WebAPI
 
-# Aplicação no banco de dados (Azure)
+## Aplicação no banco de dados (Azure)
 dotnet ef database update --project Infra.Data --startup-project WebAPI
-🔗 String de conexão (mascarada)
-json
-Copiar
-Editar
+
+
+## Aplicação no banco de dados (Azure)
+dotnet ef database update --project Infra.Data --startup-project WebAPI
+
+# 🔗 String de conexão (mascarada)
+
 "ConnectionStrings": {
   "DefaultConnection": "Server=tcp:servidor-sql-aluno.database.windows.net,1433;Initial Catalog=NomeDoBanco;Persist Security Info=False;User ID=aluno_azure;Password=********;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 }
+
 ☁️ Configuração no Azure
 SQL Server criado no portal Azure
 
