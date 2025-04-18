@@ -38,7 +38,7 @@ dotnet ef database update --project Infra.Data --startup-project WebAPI
   "DefaultConnection": "Server=tcp:servidor-sql-aluno.database.windows.net,1433;Initial Catalog=NomeDoBanco;Persist Security Info=False;User ID=aluno_azure;Password=********;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 }
 
-☁️ Configuração no Azure
+# ☁️ Configuração no Azure
 SQL Server criado no portal Azure
 
 Banco de dados nomeado: avaliacao_tp2_aluno
@@ -49,7 +49,7 @@ Autenticação SQL ativada
 
 Migration aplicada com sucesso diretamente do Visual Studio Terminal
 
-🖼️ Prints de evidência (opcional)
+# 🖼️ Prints de evidência (opcional)
 Insira prints aqui comprovando:
 
 Aplicação bem-sucedida da migration no Azure
