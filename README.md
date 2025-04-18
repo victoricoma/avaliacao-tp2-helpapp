@@ -56,15 +56,12 @@ Aplicação bem-sucedida da migration no Azure
 
 Tabelas e dados populados
 
-# 🧠 Observações finais
-Tive que ajustar o tempo de timeout da conexão para funcionar corretamente com minha rede.
-
-Testei localmente antes de aplicar no Azure para garantir a integridade da migration.
-
 # 👨‍💻 Dados do aluno
 Nome: [Seu Nome Aqui]
 Curso: Desenvolvimento de Sistemas – 3º Semestre
+
 Professor: Victor Icoma
+
 Branch da entrega: avaliacao-githubaluno
 
 ## 🧱 Estrutura da aplicação
