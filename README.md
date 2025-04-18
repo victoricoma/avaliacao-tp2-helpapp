@@ -34,3 +34,49 @@ Implementar os repositórios `Category` e `Product` seguindo os padrões da Clea
  ┃ ┃ ┣ 📂 Repositories
  ┃ ┃ ┗ 📂 EntityConfiguration
  ┗ 📂 WebAPI
+
+
+🔧 Comandos utilizados
+bash
+Copiar
+Editar
+# Criação da migration
+dotnet ef migrations add Initial --project Infra.Data --startup-project WebAPI
+
+# Aplicação no banco de dados (Azure)
+dotnet ef database update --project Infra.Data --startup-project WebAPI
+🔗 String de conexão (mascarada)
+json
+Copiar
+Editar
+"ConnectionStrings": {
+  "DefaultConnection": "Server=tcp:servidor-sql-aluno.database.windows.net,1433;Initial Catalog=NomeDoBanco;Persist Security Info=False;User ID=aluno_azure;Password=********;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+}
+☁️ Configuração no Azure
+SQL Server criado no portal Azure
+
+Banco de dados nomeado: avaliacao_tp2_aluno
+
+IP local autorizado no firewall
+
+Autenticação SQL ativada
+
+Migration aplicada com sucesso diretamente do Visual Studio Terminal
+
+🖼️ Prints de evidência (opcional)
+Insira prints aqui comprovando:
+
+Aplicação bem-sucedida da migration no Azure
+
+Tabelas e dados populados
+
+🧠 Observações finais
+Tive que ajustar o tempo de timeout da conexão para funcionar corretamente com minha rede.
+
+Testei localmente antes de aplicar no Azure para garantir a integridade da migration.
+
+👨‍💻 Dados do aluno
+Nome: [Seu Nome Aqui]
+Curso: Desenvolvimento de Sistemas – 3º Semestre
+Professor: Victor Icoma
+Branch da entrega: avaliacao-githubaluno
