@@ -21,21 +21,6 @@ Implementar os repositórios `Category` e `Product` seguindo os padrões da Clea
 - [x] Migration aplicada com sucesso no Azure via `dotnet ef database update`
 
 ---
-
-## 🧱 Estrutura da aplicação
-
-```bash
-📦 src
- ┣ 📂 Domain
- ┣ 📂 Application
- ┣ 📂 Infra
- ┃ ┣ 📂 Data
- ┃ ┃ ┣ 📂 Migrations
- ┃ ┃ ┣ 📂 Repositories
- ┃ ┃ ┗ 📂 EntityConfiguration
- ┗ 📂 WebAPI
-
-
 🔧 Comandos utilizados
 bash
 Copiar
@@ -80,3 +65,17 @@ Nome: [Seu Nome Aqui]
 Curso: Desenvolvimento de Sistemas – 3º Semestre
 Professor: Victor Icoma
 Branch da entrega: avaliacao-githubaluno
+
+## 🧱 Estrutura da aplicação
+
+```bash
+📦 src
+ ┣ 📂 Domain
+ ┣ 📂 Application
+ ┣ 📂 Infra
+ ┃ ┣ 📂 Data
+ ┃ ┃ ┣ 📂 Migrations
+ ┃ ┃ ┣ 📂 Repositories
+ ┃ ┃ ┗ 📂 EntityConfiguration
+ ┗ 📂 WebAPI
+
