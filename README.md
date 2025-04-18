@@ -21,7 +21,7 @@ Implementar os repositórios `Category` e `Product` seguindo os padrões da Clea
 - [x] Migration aplicada com sucesso no Azure via `dotnet ef database update`
 
 ---
-#🔧 Comandos utilizados
+# 🔧 Comandos utilizados
 ## Criação da migration
 dotnet ef migrations add Initial --project Infra.Data --startup-project WebAPI
 
