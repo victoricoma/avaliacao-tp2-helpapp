@@ -1,6 +1,4 @@
-﻿Claro! Aqui está um modelo de `README.md` para guiar os alunos na documentação da entrega da avaliação técnica. O template já está adaptado para uso no GitHub, com seções para comandos, configurações, prints e observações:
-
----
+# 🧪 Avaliação Técnica – Clean Architecture + Azure SQL com Migration Initial
 
 ```markdown
 # 📘 Avaliação Técnica – Clean Architecture + Azure SQL
