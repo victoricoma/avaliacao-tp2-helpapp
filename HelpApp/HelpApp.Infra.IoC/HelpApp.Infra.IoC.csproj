@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.20">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HelpApp.Application\HelpApp.Application.csproj" />
+    <ProjectReference Include="..\HelpApp.Domain\HelpApp.Domain.csproj" />
+    <ProjectReference Include="..\HelpApp.Infra.Data\HelpApp.Infra.Data.csproj" />
+  </ItemGroup>
+
 </Project>

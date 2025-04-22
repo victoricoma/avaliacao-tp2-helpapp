@@ -1,7 +1,7 @@
 ﻿using HelpApp.Domain.Entities;
-using HelpApp.Domain.Interfaces.Repositories;
+using HelpApp.Domain.Interfaces;
+using HelpApp.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
-using HelpApp.Infrastructure.Data;
 
 namespace HelpApp.Infra.Data.Repositories
 {
@@ -15,25 +15,32 @@ namespace HelpApp.Infra.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<Product> GetByIdAsync (int id){
+        public async Task<Product> GetById(int? id)
+        {
             return await _dbContext.Products.FindAsync(id);
         }
-        
-        public Task<IEnumerable<Product>> GetAllAsync()
+
+        public async Task<IEnumerable<Product>> GetProducts()
         {
             return await _dbContext.Products.ToListAsync();
         }
 
-        public void Add(Product product){
-            _dbContext.Products.Add(product);
+        public async Task<Product> Create(Product product)
+        {
+            await _dbContext.Products.AddAsync(product);
+            return product;
         }
 
-        public void Remove(Product product){
+        public async Task<Product> Remove(Product product)
+        {
             _dbContext.Products.Remove(product);
+            return product;
         }
 
-        public void Update(Product product){
+        public async Task<Product> Update(Product product)
+        {
             _dbContext.Entry(product).State = EntityState.Modified;
+            return product;
         }
     }
 }

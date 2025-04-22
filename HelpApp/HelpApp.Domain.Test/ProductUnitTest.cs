@@ -1,5 +1,5 @@
-﻿using HelpApp.Domain.Entities;
-using FluentAssertions;
+﻿using FluentAssertions;
+using HelpApp.Domain.Entities;
 using Xunit;
 
 namespace HelpApp.Domain.Test
@@ -7,20 +7,20 @@ namespace HelpApp.Domain.Test
     public class ProductUnitTest
     {
         #region Testes Positivos
-        [Fact(DisplayName ="Create Product With Parameters Full")]
+        [Fact(DisplayName = "Create Product With Parameters Full")]
         public void CreateProduct_WithValidParameters_ResultObjectValisState()
         {
-            Action action= () => new Product(1, 
-                "Product Name", 
-                "Product Description", 
-                9.99m, 99, 
+            Action action = () => new Product(1,
+                "Product Name",
+                "Product Description",
+                9.99m, 99,
                 "https://img/product.jpg");
             action.Should()
                 .NotThrow<HelpApp.Domain.Validation.DomainExceptionValidation>();
         }
         #endregion
         #region Testes Negativos
-        [Fact(DisplayName ="Create Product With ID Negative")]
+        [Fact(DisplayName = "Create Product With ID Negative")]
         public void CreateProduct_NegativeIdValue_DomainExceptionInvalidId()
         {
             Action action = () => new Product(-1, "Product Name", "Product Description", 9.99m,

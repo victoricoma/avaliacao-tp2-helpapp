@@ -1,38 +1,47 @@
 ﻿using HelpApp.Domain.Entities;
-using HelpApp.Domain.Interfaces.Repositories;
-using HelpApp.Infrastructure.Data;
+using HelpApp.Domain.Interfaces;
+using HelpApp.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace HelpApp.Infra.Data.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        protected readonly AppçicationDbContext _dbContext;
+        protected readonly ApplicationDbContext _dbContext;
 
         public CategoryRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<Category> GetByIdAsync (int id){
+        public async Task<Category> GetById(int? id)
+        {
             return await _dbContext.Categories.FindAsync(id);
         }
-        
-        public Task<IEnumerable<Category>> GetAllAsync()
+
+        public async Task<IEnumerable<Category>> GetCategories()
         {
             return await _dbContext.Categories.ToListAsync();
         }
 
-        public void Add(Category category){
-            _dbContext.Categories.Add(category);
+        public async Task<Category> Create(Category category)
+        {
+            await _dbContext.Categories.AddAsync(category);
+            return category;
         }
 
-        public void Remove(Category category){
+        public async Task<Category> Remove(Category category)
+        {
             _dbContext.Categories.Remove(category);
+            return category;
+
         }
 
-        public void Update(Category category){
+        public async Task<Category> Update(Category category)
+        {
             _dbContext.Categories.Update(category);
+            return category;
         }
+
     }
 }

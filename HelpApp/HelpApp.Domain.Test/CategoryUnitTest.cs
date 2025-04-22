@@ -1,5 +1,5 @@
-﻿using HelpApp.Domain.Entities;
-using FluentAssertions;
+﻿using FluentAssertions;
+using HelpApp.Domain.Entities;
 using Xunit;
 
 namespace HelpApp.Domain.Test
@@ -15,7 +15,7 @@ namespace HelpApp.Domain.Test
         }
         #endregion
         #region Testes Negativos
-        [Fact(DisplayName ="Create Category With Name Empty")]
+        [Fact(DisplayName = "Create Category With Name Empty")]
         public void CreateCategory_WithNameEmpty_ResultObjetcException()
         {
             Action action = () => new Category(1, "");
