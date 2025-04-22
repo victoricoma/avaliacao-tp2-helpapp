@@ -57,13 +57,12 @@ Aplicação bem-sucedida da migration no Azure
 Tabelas e dados populados
 
 # 👨‍💻 Dados do aluno
-Nome: [Seu Nome Aqui]
+Nome: Vitor Hugo Bonilha Zanatta Silva
 Curso: Desenvolvimento de Sistemas – 3º Semestre
 
 Professor: Victor Icoma
 
-Branch da entrega: avaliacao-githubaluno
-
+Branch da entrega: avaliacao-VitorBZS
 ## 🧱 Estrutura da aplicação
 
 ```bash
