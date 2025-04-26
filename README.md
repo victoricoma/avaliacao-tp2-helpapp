@@ -57,12 +57,12 @@ Aplicação bem-sucedida da migration no Azure
 Tabelas e dados populados
 
 # 👨‍💻 Dados do aluno
-Nome: [Seu Nome Aqui]
+Nome: Ana Julia Tsubouchi de Oliveira
 Curso: Desenvolvimento de Sistemas – 3º Semestre
 
 Professor: Victor Icoma
 
-Branch da entrega: avaliacao-githubaluno
+Branch da entrega: avaliacao-AnaTusbouchi
 
 ## 🧱 Estrutura da aplicação
 
