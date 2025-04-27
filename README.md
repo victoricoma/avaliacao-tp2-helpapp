@@ -21,6 +21,12 @@ Implementar os repositórios `Category` e `Product` seguindo os padrões da Clea
 - [x] Migration aplicada com sucesso no Azure via `dotnet ef database update`
 
 ---
+
+# Criação da Branch
+
+![minhabranch](https://github.com/user-attachments/assets/b109a744-8253-4d8c-b987-85d312e97035)
+
+
 # 🔧 Comandos utilizados
 ## Criação da migration
 dotnet ef migrations add Initial --project Infra.Data --startup-project WebAPI
@@ -28,41 +34,38 @@ dotnet ef migrations add Initial --project Infra.Data --startup-project WebAPI
 ## Aplicação no banco de dados (Azure)
 dotnet ef database update --project Infra.Data --startup-project WebAPI
 
+![comandomigration](https://github.com/user-attachments/assets/ab4bde1a-f3c1-4936-b607-db4190a6ed60)
 
-## Aplicação no banco de dados (Azure)
-dotnet ef database update --project Infra.Data --startup-project WebAPI
 
-# 🔗 String de conexão (mascarada)
+# 🔗 String de conexão (mascarada)  Usando User Secrets (recomendado para desenvolvimento)
 
-"ConnectionStrings": {
-  "DefaultConnection": "Server=tcp:servidor-sql-aluno.database.windows.net,1433;Initial Catalog=NomeDoBanco;Persist Security Info=False;User ID=aluno_azure;Password=********;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-}
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=SEU_SERVIDOR_AQUI;Database=NOME_BANCO_AQUI;iser ID=SEU_USUARIO_AQUI;password=SUA_SENHA_AQUI;Encrypt=True;TrustServerCertificate=False;ConnectionTimeout=30"},
+    
+![conexaomascarada](https://github.com/user-attachments/assets/35835852-dd03-4df6-bb6c-a722799cd010)
 
 # ☁️ Configuração no Azure
 SQL Server criado no portal Azure
 
-Banco de dados nomeado: avaliacao_tp2_aluno
+Banco de dados nomeado: avaliacao_tp2_pedrobachiega
 
 IP local autorizado no firewall
 
-Autenticação SQL ativada
+![meuip](https://github.com/user-attachments/assets/1dc4b695-3519-4b1f-b6f4-3b3a0944fbdd)
 
-Migration aplicada com sucesso diretamente do Visual Studio Terminal
-
-# 🖼️ Prints de evidência (opcional)
-Insira prints aqui comprovando:
-
-Aplicação bem-sucedida da migration no Azure
 
 Tabelas e dados populados
 
+![resultadossql](https://github.com/user-attachments/assets/5cfbe988-bb5c-4fef-a5f6-56c02026ced6)
+
+
 # 👨‍💻 Dados do aluno
-Nome: [Seu Nome Aqui]
+Nome: Pedro Henrique Bachiega
 Curso: Desenvolvimento de Sistemas – 3º Semestre
 
 Professor: Victor Icoma
 
-Branch da entrega: avaliacao-githubaluno
+Branch da entrega: avaliacao-PedroHBachiega
 
 ## 🧱 Estrutura da aplicação
 
