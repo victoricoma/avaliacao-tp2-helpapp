@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HelpApp.Domain\HelpApp.Domain.csproj" />
+    <ProjectReference Include="..\HelpApp.Infra.Data\HelpApp.Infra.Data.csproj" />
+  </ItemGroup>
+
 </Project>
