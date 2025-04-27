@@ -11,7 +11,6 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddInfrastructureAPI(builder.Configuration);
-builder.Services.AddOptions();
 
 var app = builder.Build();
 
