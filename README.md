@@ -59,6 +59,11 @@ Tabelas e dados populados
 ![resultadossql](https://github.com/user-attachments/assets/5cfbe988-bb5c-4fef-a5f6-56c02026ced6)
 
 
+Testes Unitários do projeto
+
+![testes](https://github.com/user-attachments/assets/0b2d10a8-fb85-4443-a1dc-7398891a4a0d)
+
+
 # 👨‍💻 Dados do aluno
 Nome: Pedro Henrique Bachiega
 Curso: Desenvolvimento de Sistemas – 3º Semestre
