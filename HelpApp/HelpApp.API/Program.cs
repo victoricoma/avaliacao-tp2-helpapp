@@ -22,6 +22,8 @@ if (builder.Environment.IsDevelopment())
     builder.Configuration.AddUserSecrets<Program>();
 }
 
+AppContext.SetSwitch("Switch.Microsoft.Data.SqlClient.DisablePerformanceCounters", true);
+
 var app = builder.Build();
 
 // HTTP pipeline
