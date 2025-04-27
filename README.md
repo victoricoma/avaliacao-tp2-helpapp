@@ -37,7 +37,7 @@ dotnet ef database update --project Infra.Data --startup-project WebAPI
 ![comandomigration](https://github.com/user-attachments/assets/ab4bde1a-f3c1-4936-b607-db4190a6ed60)
 
 
-# 🔗 String de conexão (mascarada)  Usando User Secrets (recomendado para desenvolvimento)
+# 🔗 String de conexão (mascarada)  Usando User Secrets (recomendado para desenvolvimento) Demonstração via API para ver a string sendo mascarada
 
   "ConnectionStrings": {
     "DefaultConnection": "Server=SEU_SERVIDOR_AQUI;Database=NOME_BANCO_AQUI;iser ID=SEU_USUARIO_AQUI;password=SUA_SENHA_AQUI;Encrypt=True;TrustServerCertificate=False;ConnectionTimeout=30"},
