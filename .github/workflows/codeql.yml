@@ -35,7 +35,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Initialize CodeQL
+    - name: Analise Qualidade de Codigo BOT
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
