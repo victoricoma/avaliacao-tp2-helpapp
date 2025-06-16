@@ -48,7 +48,8 @@ jobs:
           'your code, for example:'
         echo '  make bootstrap'
         echo '  make release'
-        curl "https://chatgpt.com/g/g-680903a77fec8191a9aa057505270ffa-corretor-provas-tp2-avaliacao-2"
+        curl "https://chatgpt.com/g/g-680903a77fec8191a9aa057505270ffa-corretor-provas-tp2-avaliacao-2" > avaliacao-bot.txt
+        type avaliacao-bot.txt
         exit 1
 
     - name: Instala 7-Zip
