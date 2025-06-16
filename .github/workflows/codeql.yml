@@ -69,12 +69,16 @@ jobs:
       run: |
         7z a -tzip nota-prova.zip ./nota-prova/* -p'provaicoma3010'
 
-    - name: Publica nota-prova.zip como artefato
-      uses: actions/upload-artifact@v4
-      with:
-        name: nota-prova
-        path: nota-prova.zip
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{matrix.language}}"
+    - name: Move nota-prova.zip para raiz e commit
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git checkout ${{ github.ref_name }}
+        mv nota-prova.zip ./nota-prova.zip
+        git add nota-prova.zip
+        git commit -m "Adiciona nota-prova.zip gerado pelo workflow"
+        git push origin ${{ github.ref_name }}
+        - name: Perform CodeQL Analysis
+          uses: github/codeql-action/analyze@v3
+          with:
+            category: "/language:${{matrix.language}}"
