@@ -70,3 +70,7 @@ jobs:
     - name: Compacta a pasta nota-prova em zip com senha
       run: |
         7z a -tzip nota-prova.zip ./nota-prova/* -p'provaicoma3010'
+    - name: Exibir conteúdo de resposta_chatgpt.txt
+      run: |
+        echo "=== Conteúdo do arquivo resposta_chatgpt.txt ==="
+        cat resposta_chatgpt.txt
