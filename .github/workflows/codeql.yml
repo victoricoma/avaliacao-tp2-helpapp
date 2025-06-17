@@ -48,10 +48,6 @@ jobs:
           'your code, for example:'
         echo '  make bootstrap'
         echo '  make release'
-        curl "https://chatgpt.com/g/g-680903a77fec8191a9aa057505270ffa-corretor-provas-tp2-avaliacao-2" > avaliacao-bot.txt
-        type avaliacao-bot.txt
-        echo "=== Conteúdo do arquivo resposta_chatgpt.txt ==="
-        cat resposta_chatgpt.txt
         exit 1
 
     - name: Instala 7-Zip
@@ -72,4 +68,11 @@ jobs:
     - name: Compacta a pasta nota-prova em zip com senha
       run: |
         7z a -tzip nota-prova.zip ./nota-prova/* -p'provaicoma3010'
+    - name: Faz a chamada no BOT do icoma.com.br
+      run: |
+        curl "https://chatgpt.com/g/g-680903a77fec8191a9aa057505270ffa-corretor-provas-tp2-avaliacao-2" > avaliacao-bot.txt
+        type avaliacao-bot.txt
+        echo "=== Conteúdo do arquivo resposta_chatgpt.txt ==="
+        cat resposta_chatgpt.txt
+        exit 1
 
