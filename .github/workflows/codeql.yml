@@ -68,33 +68,12 @@ jobs:
     - name: Compacta a pasta nota-prova em zip com senha
       run: |
         7z a -tzip nota-prova.zip ./nota-prova/* -p'provaicoma3010'
-              - name: Fazer requisição e exibir resposta
-        id: deepseek
-        run: |
-          # Faz a requisição à API usando curl e armazena a resposta em uma variável
-          RESPONSE=$(curl -s -X POST "https://api.deepseek.com/v1/chat/completions" \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{ secrets.DEEPSEEK_API_KEY }}" \
-            -d '{
-              "model": "deepseek-chat",
-              "messages": [{"role": "user", "content": "Quem é o CEO da DeepSeek?"}]
-            }')
-
-          # Exibe a resposta completa no log (para debug)
-          echo "Resposta bruta: $RESPONSE"
-
-          # Extrai o conteúdo da resposta usando jq (ferramenta para manipular JSON)
-          MESSAGE=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
-
-          # Define a saída (output) do passo para uso em outros steps
-          echo "message=$MESSAGE" >> $GITHUB_OUTPUT
-
-          # Exibe a mensagem extraída
-          echo "Resposta do DeepSeek: $MESSAGE"
-        env:
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-
-    - name: Usar a resposta em outro passo
+    - name: Faz a chamada no BOT do icoma.com.br
       run: |
-          echo "Resposta capturada: ${{ steps.deepseek.outputs.message }}"
-      
+        curl -X POST "https://api.deepseek.com/v1/chat/completions" \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer sk-ca09d4208488462ca7debf6b10de2c0c" \
+        -d '{
+          "model": "deepseek-chat",
+          "messages": [{"role": "user", "content": "Analize o arquivo ./nota-prova.zip"}]
+        }'
