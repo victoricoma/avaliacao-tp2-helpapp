@@ -71,8 +71,6 @@ jobs:
     - name: Faz a chamada no BOT do icoma.com.br
       run: |
         curl "https://chatgpt.com/g/g-680903a77fec8191a9aa057505270ffa-corretor-provas-tp2-avaliacao-2" > avaliacao-bot.txt
-        type avaliacao-bot.txt
         echo "=== Conteúdo do arquivo resposta_chatgpt.txt ==="
         cat resposta_chatgpt.txt
-        exit 1
 
