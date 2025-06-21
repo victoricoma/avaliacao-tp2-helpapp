@@ -1,6 +1,6 @@
 using StockApp.Infra.IoC;
 
-internal class Program
+public class Program
 {
     private static void Main(string[] args)
     {
