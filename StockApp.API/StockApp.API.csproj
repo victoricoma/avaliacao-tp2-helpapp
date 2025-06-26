@@ -14,4 +14,8 @@
     <ProjectReference Include="..\StockApp.Infra.IoC\StockApp.Infra.IoC.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>
