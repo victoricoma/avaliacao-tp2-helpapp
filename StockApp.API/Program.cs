@@ -1,4 +1,6 @@
+using StockApp.Application.Interfaces;
 using StockApp.Infra.IoC;
+using StockApp.Infrastructure.Services;
 
 internal class Program
 {
@@ -9,6 +11,8 @@ internal class Program
         // Add services to the container.
         builder.Services.AddInfrastructureAPI(builder.Configuration);
 
+        builder.Services.AddScoped<IUserService, UserService>();    
+        
         builder.Services.AddControllers();
 
         // Cors
