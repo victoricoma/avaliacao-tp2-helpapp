@@ -15,6 +15,9 @@ namespace StockApp.Application.Mappings
         {
             CreateMap<Category, CategoryDTO>().ReverseMap();
             CreateMap<Product, ProductDTO>().ReverseMap();
+
+            CreateMap<ProductDTO, Product>()
+                .ForMember(dest => dest.Category, opt => opt.Ignore());
         }
     }
 }

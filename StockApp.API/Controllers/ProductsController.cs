@@ -34,4 +34,16 @@ public class ProductsController : ControllerBase
         }
         return Ok(product);
     }
+    
+    [HttpPost]
+    public async Task<ActionResult<ProductDTO>> Create([FromBody] ProductDTO productDTO)
+    {
+        if(productDTO == null)
+        {
+            return BadRequest("Invalid Data");
+        }
+        await _productService.Add(productDTO);
+        return CreatedAtAction(nameof(GetById), new { id = productDTO.Id }, productDTO);
+    }
+    
 }
