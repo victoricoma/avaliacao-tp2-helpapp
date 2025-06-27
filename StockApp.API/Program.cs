@@ -1,3 +1,5 @@
+using StockApp.Application.Interfaces;
+using StockApp.Application.Services;
 using StockApp.Infra.IoC;
 
 public class Program
@@ -13,6 +15,7 @@ public class Program
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddSingleton<ICartService, CartService>();
 
         var app = builder.Build();
 
