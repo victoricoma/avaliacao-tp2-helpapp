@@ -10,7 +10,12 @@ using StockApp.Domain.Interfaces;
 using StockApp.Infra.Data.Context;
 using StockApp.Infra.Data.Identity;
 using StockApp.Infra.Data.Repositories;
-using System.Reflection;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using StockApp.Infra.Data.EntityConfiguration;
 
 namespace StockApp.Infra.IoC
 {
@@ -28,14 +33,13 @@ namespace StockApp.Infra.IoC
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<IStockRepository, StockRepository>();
+           
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
 
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
-            services.AddMediatR(Assembly.GetAssembly(typeof(StockApp.Application.Mappings.MappingProfile))!);
             
             var myhandlers = AppDomain.CurrentDomain.Load("StockApp.Application");
             services.AddMediatR(myhandlers);

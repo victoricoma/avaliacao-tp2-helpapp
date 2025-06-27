@@ -1,5 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StockApp.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace StockApp.Infra.Data.Context
 {
@@ -14,7 +19,7 @@ namespace StockApp.Infra.Data.Context
 
         public DbSet<Supplier> Suppliers { get; set; }
 
-        public DbSet<Stock> Stocks { get; set; } = null!;
+       
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
