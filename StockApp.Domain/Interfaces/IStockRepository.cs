@@ -4,11 +4,11 @@ namespace StockApp.Domain.Interfaces
 {
     public interface IStockRepository
     {
-        Task<Stock?> GetByIdAsync(int id);
-        Task<IEnumerable<Stock>> GetAllAsync();
-        Task<Stock> AddAsync(Stock stock);
-        Task UpdateAsync(Stock stock);
-        Task<bool> DeleteAsync(int id);
-        Task<bool> ExistsAsync(int id);
+        Task<Stock?> GetById(int id);
+        Task<IEnumerable<Stock>> GetAll();
+        Task<Stock> Add(Stock stock);
+        Task Update(Stock stock);
+        Task<bool> Delete(int id);
+        Task<bool> Exists(int id);
     }
 }
