@@ -5,5 +5,6 @@ namespace StockApp.Domain.Interfaces
     {
 
         Task<User> GetByUsernameAsync(string username);
+        Task AddAsync(User user);
     }
 }
