@@ -25,7 +25,6 @@ namespace StockApp.API.Controllers
                 return BadRequest("Dados Inválidos ou usuário não pode ser registrado");
             return Ok("Usuário registrado com sucesso");
         }
-    
     }
 }
 
