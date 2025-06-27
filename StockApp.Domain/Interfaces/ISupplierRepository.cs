@@ -2,7 +2,9 @@
 
 namespace StockApp.Domain.Interfaces
 {
-    public interface ISupplierRepository
+
+     public interface ISupplierRepository
+
     {
         Task<IEnumerable<Supplier>> GetSuppliers();
         Task<Supplier?> GetById(int? id);
