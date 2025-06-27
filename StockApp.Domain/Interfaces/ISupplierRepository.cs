@@ -1,7 +1,7 @@
 ﻿using StockApp.Domain.Entities;
 namespace StockApp.Domain.Interfaces
 {
-    interface ISupplierRepository
+     public interface ISupplierRepository
     {
         Task<IEnumerable<Supplier>> GetSuppliers();
         Task<Supplier?> GetById(int? id);
