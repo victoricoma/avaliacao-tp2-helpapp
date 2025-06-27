@@ -2,7 +2,7 @@
 
 namespace StockApp.Application.DTOs
 {
-    public class SupplierDTO
+    public class CategoryDTO
     {
         public int Id { get; set; }
 
