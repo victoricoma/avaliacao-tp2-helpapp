@@ -51,22 +51,13 @@ namespace StockApp.API.Controllers
                 new { id = supplierDTO.Id }, supplierDTO);
         }
 
-        [HttpPut(Name = "UpdateSupplier")]
-        public async Task<ActionResult> Put(int id, [FromBody] SupplierDTO supplierDTO)
+        [HttpPut("{id:int}", Name = "UpdateSupplier")]
+        public async Task<IActionResult> Put(int id, [FromBody] SupplierDTO supplierDto)
         {
-            if (id != supplierDTO.Id)
-            {
-                return BadRequest("Inconsistent Id");
-            }
-
-            if (supplierDTO == null)
-            {
-                return BadRequest("Invalid update data");
-            }
-
-            await _supplierService.Update(supplierDTO);
-
-            return Ok(supplierDTO);
+            if (supplierDto == null || id != supplierDto.Id)
+                return BadRequest();
+            await _supplierService.Update(supplierDto);
+            return Ok(supplierDto);
         }
 
         [HttpDelete("{id:int}", Name = "DeleteSupplier")]

@@ -46,4 +46,12 @@ public class ProductsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = productDTO.Id }, productDTO);
     }
     
+    [HttpPut("{id:int}", Name = "UpdateProduct")]
+    public async Task<IActionResult> Put(int id, [FromBody] ProductDTO productDto)
+    {
+        if (productDto == null || id != productDto.Id)
+            return BadRequest();
+        await _productService.Update(productDto);
+        return Ok(productDto);
+    }
 }
