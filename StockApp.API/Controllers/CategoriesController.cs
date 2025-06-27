@@ -48,21 +48,13 @@ namespace StockApp.API.Controllers
                 new { id = categoryDTO.Id }, categoryDTO);
         }
 
-        [HttpPut(Name ="Update Category")]
-        public async Task<ActionResult> Put(int id, [FromBody] CategoryDTO categoryDTO)
+        [HttpPut("{id:int}", Name = "UpdateCategory")]
+        public async Task<IActionResult> Put(int id, [FromBody] CategoryDTO categoryDto)
         {
-            if(id != categoryDTO.Id)
-            {
-                return BadRequest("Inconsisted Id");
-            }
-            if(categoryDTO == null)
-            {
-                return BadRequest("Update Data Invalid");
-            }
-
-            await _categoryService.Update(categoryDTO);
-
-            return Ok(categoryDTO);
+            if (categoryDto == null || id != categoryDto.Id)
+                return BadRequest();
+            await _categoryService.Update(categoryDto);
+            return Ok(categoryDto);
         }
 
         [HttpDelete("{id:int}", Name ="Delete Category")]
