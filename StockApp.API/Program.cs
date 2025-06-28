@@ -15,6 +15,8 @@ using StockApp.Infra.Data.Repositories;
 using Serilog;
 using Serilog.Events;
 using StockApp.Application.Services;
+using StockApp.API.Infrastructure.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 internal class Program
 {
@@ -151,7 +153,12 @@ internal class Program
             builder.Services.AddAuthorization(options =>
             {
                 options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+
+                options.AddPolicy("CanManageStock", policy =>
+                     policy.Requirements.Add(new PermissionRequirement("CanManageStock")));
             });
+
+            builder.Services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
 
             var app = builder.Build();
 
