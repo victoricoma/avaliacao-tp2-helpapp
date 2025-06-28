@@ -1,3 +1,4 @@
+using StockApp.API.Middleware;
 using StockApp.Infra.IoC;
 using StockApp.Infra.Data.Identity;
 using StockApp.Domain.Interfaces;
@@ -53,7 +54,7 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        app.UseErrorHandlerMiddleware();
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
