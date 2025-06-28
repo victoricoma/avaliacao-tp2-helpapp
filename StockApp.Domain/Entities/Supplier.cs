@@ -1,7 +1,11 @@
-﻿using StockApp.Domain.Validation;
+using StockApp.Domain.Validation;
+using System.Collections.Generic;
 
 namespace StockApp.Domain.Entities
 {
+    /// <summary>
+    /// Entidade que representa um fornecedor
+    /// </summary>
     public class Supplier
     {
         #region Atributos
@@ -11,6 +15,10 @@ namespace StockApp.Domain.Entities
         public string ContactEmail { get; set; }
 
         public string PhoneNumber { get; set; }
+        
+        // Coleções de navegação
+        public ICollection<SupplierContract> Contracts { get; set; } = new List<SupplierContract>();
+        public ICollection<SupplierEvaluation> Evaluations { get; set; } = new List<SupplierEvaluation>();
         #endregion
 
         #region Construtores
