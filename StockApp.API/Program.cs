@@ -1,4 +1,4 @@
-﻿using StockApp.Application.Interfaces;
+using StockApp.Application.Interfaces;
 using StockApp.Infra.IoC;
 using StockApp.Infrastructure.Services;
 using StockApp.API.Infrastructure.Middlewares;
@@ -11,16 +11,32 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using StockApp.Domain.Interfaces;
 using StockApp.Infra.Data.Repositories;
+using Serilog;
+using Serilog.Events;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        // Configurar Serilog a partir do appsettings.json
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json")
+    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+    .Build();
 
-        builder.Logging.ClearProviders();
-        builder.Logging.AddConsole();
-        builder.Logging.AddDebug();
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(configuration)
+    .CreateLogger();
+
+        try
+        {
+            Log.Information("Iniciando aplicação StockApp");
+            
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Configurar Serilog como provider de logging
+            builder.Host.UseSerilog();
 
 
         builder.Services.AddInfrastructureAPI(builder.Configuration);
@@ -113,8 +129,38 @@ internal class Program
 
         app.UseAuthorization();
 
+        // Configurar o pipeline de requisições HTTP
+            app.UseMiddleware<RequestLoggingMiddleware>();
+            
+            app.UseSerilogRequestLogging(options =>
+            {
+                options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
+                options.GetLevel = (httpContext, elapsed, ex) => ex != null
+                    ? LogEventLevel.Error
+                    : httpContext.Response.StatusCode > 499
+                        ? LogEventLevel.Error
+                        : LogEventLevel.Information;
+                options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+                {
+                    diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
+                    diagnosticContext.Set("RequestScheme", httpContext.Request.Scheme);
+                    diagnosticContext.Set("UserAgent", httpContext.Request.Headers["User-Agent"].FirstOrDefault());
+                    diagnosticContext.Set("RemoteIP", httpContext.Connection.RemoteIpAddress?.ToString());
+                };
+            });
+
         app.MapControllers();
 
+        Log.Information("Aplicação StockApp iniciada com sucesso");
         app.Run();
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Aplicação falhou ao iniciar");
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
     }
 }
