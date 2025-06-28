@@ -10,10 +10,12 @@ namespace StockApp.API.Controllers
     public class TokenController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IMfaService _mfaService;
 
-        public TokenController(IAuthService authService)
+        public TokenController(IAuthService authService, IMfaService mfaService)
         {
             _authService = authService;
+            _mfaService = mfaService;
         }
 
         [HttpPost("login")]
@@ -27,7 +29,26 @@ namespace StockApp.API.Controllers
 
             return Ok(token);
         }
-        
 
+        [HttpGet("generate-otp")]
+        public IActionResult GenerateOtp()
+        {
+            var otp = _mfaService.GenerateOtp();
+
+            return Ok(new { otp });
+        }
+
+        [HttpPost("validate-otp")]
+        public IActionResult ValidateOtp([FromBody] OtpRequest request)
+        {
+            var isValid = _mfaService.ValidateOtp(request.UserOtp, request.StoredOtp);
+            return isValid ? Ok("OTP válido") : BadRequest("OTP inválido");
+        }
+
+        public class OtpRequest
+        {
+            public string UserOtp { get; set; }
+            public string StoredOtp { get; set; }
+        }
     }
 }
