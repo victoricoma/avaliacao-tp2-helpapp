@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
 using StockApp.Domain.Entities;
@@ -32,6 +32,21 @@ namespace StockApp.Application.Services
         {
             var productsEntity = await _productRepository.GetProducts();
             return _mapper.Map<IEnumerable<ProductDTO>>(productsEntity);
+        }
+
+        public async Task<PagedResult<ProductDTO>> GetProductsPaged(PaginationParameters paginationParameters)
+        {
+            var (products, totalCount) = await _productRepository.GetProductsPaged(
+                paginationParameters.PageNumber, 
+                paginationParameters.PageSize);
+            
+            var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
+            
+            return new PagedResult<ProductDTO>(
+                productDTOs, 
+                paginationParameters.PageNumber, 
+                paginationParameters.PageSize, 
+                totalCount);
         }
 
         public async Task<ProductDTO> GetProductById(int? id)

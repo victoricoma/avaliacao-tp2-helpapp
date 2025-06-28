@@ -1,4 +1,4 @@
-﻿using StockApp.Domain.Entities;
+using StockApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +10,7 @@ namespace StockApp.Domain.Interfaces
     public interface IProductRepository
     {
         Task<IEnumerable<Product>> GetProducts();
+        Task<(IEnumerable<Product> products, int totalCount)> GetProductsPaged(int pageNumber, int pageSize);
 
         Task<Product> GetById(int? id);
         Task<Product> Create(Product product);

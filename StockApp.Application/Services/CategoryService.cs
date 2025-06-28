@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
 using StockApp.Domain.Entities;
@@ -31,6 +31,21 @@ namespace StockApp.Application.Services
         {
             var categoriesEntity = await _categoryRepository.GetCategories();
             return _mapper.Map<IEnumerable<CategoryDTO>>(categoriesEntity);
+        }
+
+        public async Task<PagedResult<CategoryDTO>> GetCategoriesPaged(PaginationParameters paginationParameters)
+        {
+            var (categories, totalCount) = await _categoryRepository.GetCategoriesPaged(
+                paginationParameters.PageNumber, 
+                paginationParameters.PageSize);
+            
+            var categoryDTOs = _mapper.Map<IEnumerable<CategoryDTO>>(categories);
+            
+            return new PagedResult<CategoryDTO>(
+                categoryDTOs, 
+                paginationParameters.PageNumber, 
+                paginationParameters.PageSize, 
+                totalCount);
         }
 
         public async Task<CategoryDTO> GetCategoryById(int? id)

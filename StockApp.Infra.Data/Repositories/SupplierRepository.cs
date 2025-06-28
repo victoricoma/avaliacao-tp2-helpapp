@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using StockApp.Domain.Entities;
 using StockApp.Domain.Interfaces;
 using StockApp.Infra.Data.Context;
@@ -16,7 +16,20 @@ namespace StockApp.Infra.Data.Repositories
 
         public async Task<IEnumerable<Supplier>> GetSuppliers()
         {
-            return await _context.Suppliers.ToListAsync();
+            return await _context.Suppliers.OrderBy(s => s.Name).ToListAsync();
+        }
+
+        public async Task<(IEnumerable<Supplier> suppliers, int totalCount)> GetSuppliersPaged(int pageNumber, int pageSize)
+        {
+            var totalCount = await _context.Suppliers.CountAsync();
+            
+            var suppliers = await _context.Suppliers
+                .OrderBy(s => s.Name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (suppliers, totalCount);
         }
 
         public async Task<Supplier> GetById(int? id)

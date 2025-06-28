@@ -1,10 +1,11 @@
-﻿using StockApp.Domain.Entities;
+using StockApp.Domain.Entities;
 
 namespace StockApp.Domain.Interfaces
 {
     public interface ICategoryRepository
     {
         Task<IEnumerable<Category>> GetCategories();
+        Task<(IEnumerable<Category> categories, int totalCount)> GetCategoriesPaged(int pageNumber, int pageSize);
 
         Task<Category> GetById(int? id);
 

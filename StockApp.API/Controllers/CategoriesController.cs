@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
@@ -26,6 +26,13 @@ namespace StockApp.API.Controllers
                 return NotFound("Categories not found");
             }
             return Ok(categories);
+        }
+
+        [HttpGet("paged")]
+        public async Task<ActionResult<PagedResult<CategoryDTO>>> GetPaged([FromQuery] PaginationParameters paginationParameters)
+        {
+            var pagedCategories = await _categoryService.GetCategoriesPaged(paginationParameters);
+            return Ok(pagedCategories);
         }
         [HttpGet("{id:int}", Name = "GetCategory")]
         public async Task<ActionResult<CategoryDTO>> Get(int id)

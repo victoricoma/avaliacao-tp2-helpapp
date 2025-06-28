@@ -1,4 +1,4 @@
-﻿using StockApp.Domain.Entities;
+using StockApp.Domain.Entities;
 
 namespace StockApp.Domain.Interfaces
 {
@@ -7,6 +7,7 @@ namespace StockApp.Domain.Interfaces
 
     {
         Task<IEnumerable<Supplier>> GetSuppliers();
+        Task<(IEnumerable<Supplier> suppliers, int totalCount)> GetSuppliersPaged(int pageNumber, int pageSize);
         Task<Supplier?> GetById(int? id);
         Task<Supplier?> Create(Supplier supplier);
         Task<Supplier?> Update(Supplier supplier);

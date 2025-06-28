@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
@@ -26,6 +26,14 @@ namespace StockApp.API.Controllers
                 return NotFound("Suppliers not found");
             }
             return Ok(suppliers);
+        }
+
+        [HttpGet("paged")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<PagedResult<SupplierDTO>>> GetPaged([FromQuery] PaginationParameters paginationParameters)
+        {
+            var pagedSuppliers = await _supplierService.GetSuppliersPaged(paginationParameters);
+            return Ok(pagedSuppliers);
         }
 
         [HttpGet("{id:int}", Name = "GetSupplier")]
