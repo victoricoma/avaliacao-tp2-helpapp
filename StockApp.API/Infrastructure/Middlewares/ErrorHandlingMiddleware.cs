@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using System;
+using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Serilog;
+using Serilog.Context;
 
 namespace StockApp.API.Infrastructure.Middlewares
 {
@@ -25,7 +28,19 @@ namespace StockApp.API.Infrastructure.Middlewares
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex,"Erro não tratado");
+                using (LogContext.PushProperty("RequestId", context.TraceIdentifier))
+                using (LogContext.PushProperty("RequestPath", context.Request.Path))
+                using (LogContext.PushProperty("RequestMethod", context.Request.Method))
+                using (LogContext.PushProperty("UserAgent", context.Request.Headers["User-Agent"].FirstOrDefault()))
+                using (LogContext.PushProperty("RemoteIP", context.Connection.RemoteIpAddress?.ToString()))
+                {
+                    Log.Error(ex, "Erro não tratado na requisição {RequestMethod} {RequestPath}", 
+                        context.Request.Method, context.Request.Path);
+                    
+                    _logger.LogError(ex, "Erro não tratado na requisição {RequestMethod} {RequestPath}", 
+                        context.Request.Method, context.Request.Path);
+                }
+                
                 await HandleExceptionAsync(context, ex);
             }
         }
