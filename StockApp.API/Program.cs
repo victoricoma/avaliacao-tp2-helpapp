@@ -14,6 +14,7 @@ using StockApp.Domain.Interfaces;
 using StockApp.Infra.Data.Repositories;
 using Serilog;
 using Serilog.Events;
+using StockApp.Application.Services;
 
 internal class Program
 {
@@ -48,8 +49,8 @@ Log.Logger = new LoggerConfiguration()
         builder.Services.AddInfrastructureAPI(builder.Configuration);
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        builder.Services.AddScoped<IInventoryService, InventoryService>();
         
-        // Configuração da autenticação JWT será feita mais abaixo
         builder.Services.AddScoped<ICacheService, CacheService>();
 
         builder.Services.AddControllers(options =>
@@ -94,12 +95,12 @@ Log.Logger = new LoggerConfiguration()
                 }
             });
 
-            // Incluir comentários XML
+           
             var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             c.IncludeXmlComments(xmlPath);
 
-            // Configuração para JWT no Swagger
+           
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Description = "JWT Authorization header usando o esquema Bearer. Exemplo: \"Authorization: Bearer {token}\"",
@@ -154,7 +155,7 @@ Log.Logger = new LoggerConfiguration()
 
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
+        
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -173,7 +174,7 @@ Log.Logger = new LoggerConfiguration()
 
         app.UseAuthorization();
 
-        // Configurar o pipeline de requisições HTTP
+        
             app.UseMiddleware<RequestLoggingMiddleware>();
             
             app.UseSerilogRequestLogging(options =>
