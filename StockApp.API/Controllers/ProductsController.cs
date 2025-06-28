@@ -34,5 +34,16 @@ namespace StockApp.API.Controllers
             }
             return Ok(produto);
         }
+        [HttpPost]
+        public async Task<ActionResult> Create([FromBody] ProductDTO productDTO)
+        {
+            if (productDTO == null)
+                return BadRequest("Data Invalid");
+
+            await _productService.Add(productDTO);
+
+            return new CreatedAtRouteResult("GetProduct",
+                new {id = productDTO.Id }, productDTO);
+        }
     }
 }
