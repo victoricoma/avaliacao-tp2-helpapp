@@ -4,7 +4,8 @@ namespace StockApp.Domain.Interfaces
     public interface IUserRepository
     {
 
-        Task<User> GetByUsernameAsync(string username);
-        Task AddAsync(User user);
+        Task<User> GetByUsernameAsync(string username , string password);
+        Task<User> AddAsync(string username, string password);
+        Task Logout();
     }
 }
