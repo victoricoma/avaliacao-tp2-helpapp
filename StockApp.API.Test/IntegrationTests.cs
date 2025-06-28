@@ -30,7 +30,7 @@ namespace StockApp.API.Test
 
             var userLoginDto = new UserLoginDTO
             {
-                Email = "testuser@example.com",
+                Username = "testuser",
                 Password = "password"
             };
 
