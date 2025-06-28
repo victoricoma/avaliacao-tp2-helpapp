@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using StockApp.Domain.Entities;
 using StockApp.Domain.Interfaces;
 using StockApp.Infra.Data.Context;
@@ -30,6 +30,19 @@ namespace StockApp.Infra.Data.Repositories
         public async Task<IEnumerable<Category>> GetCategories()
         {
             return await _categoryContext.Categories.OrderBy(c => c.Name).ToListAsync();
+        }
+
+        public async Task<(IEnumerable<Category> categories, int totalCount)> GetCategoriesPaged(int pageNumber, int pageSize)
+        {
+            var totalCount = await _categoryContext.Categories.CountAsync();
+            
+            var categories = await _categoryContext.Categories
+                .OrderBy(c => c.Name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (categories, totalCount);
         }
 
         public async Task<Category> Update(Category category)

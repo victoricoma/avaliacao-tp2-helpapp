@@ -1,10 +1,11 @@
-﻿using StockApp.Application.DTOs;
+using StockApp.Application.DTOs;
 
 namespace StockApp.Application.Interfaces
 {
     public interface ISupplierService
     {
         Task<IEnumerable<SupplierDTO>> GetSuppliers();
+        Task<PagedResult<SupplierDTO>> GetSuppliersPaged(PaginationParameters paginationParameters);
 
         Task<SupplierDTO> GetSupplierById(int? id);
 

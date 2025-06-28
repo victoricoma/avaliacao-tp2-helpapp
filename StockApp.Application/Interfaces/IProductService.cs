@@ -1,4 +1,4 @@
-﻿using StockApp.Application.DTOs;
+using StockApp.Application.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +10,7 @@ namespace StockApp.Application.Interfaces
     public interface IProductService
     {
         Task<IEnumerable<ProductDTO>> GetProducts();
+        Task<PagedResult<ProductDTO>> GetProductsPaged(PaginationParameters paginationParameters);
         Task<ProductDTO> GetProductById(int? id);
         Task Add(ProductDTO productDto);
         Task Update(ProductDTO productDto);

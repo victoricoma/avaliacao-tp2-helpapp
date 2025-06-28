@@ -1,4 +1,4 @@
-﻿using StockApp.Application.DTOs;
+using StockApp.Application.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +10,7 @@ namespace StockApp.Application.Interfaces
     public interface ICategoryService
     {
         Task<IEnumerable<CategoryDTO>> GetCategories();
+        Task<PagedResult<CategoryDTO>> GetCategoriesPaged(PaginationParameters paginationParameters);
         Task<CategoryDTO> GetCategoryById(int? id);
         Task Add(CategoryDTO categoryDto);
         Task Update(CategoryDTO categoryDto);

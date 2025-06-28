@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using StockApp.Application.DTOs;
 using StockApp.Domain.Entities;
 using System;
@@ -15,6 +15,7 @@ namespace StockApp.Application.Mappings
         {
             CreateMap<Category, CategoryDTO>().ReverseMap();
             CreateMap<Product, ProductDTO>().ReverseMap();
+            CreateMap<Supplier, SupplierDTO>().ReverseMap();
 
             CreateMap<ProductDTO, Product>()
                 .ForMember(dest => dest.Category, opt => opt.Ignore());

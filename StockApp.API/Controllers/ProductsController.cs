@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
 using System.Collections.Generic;
@@ -24,6 +24,13 @@ public class ProductsController : ControllerBase
     {
         var products = await _productService.GetProducts();
         return Ok(products);
+    }
+
+    [HttpGet("paged")]
+    public async Task<ActionResult<PagedResult<ProductDTO>>> GetAllPaged([FromQuery] PaginationParameters paginationParameters)
+    {
+        var pagedProducts = await _productService.GetProductsPaged(paginationParameters);
+        return Ok(pagedProducts);
     }
     
     [HttpGet("{id}")]
