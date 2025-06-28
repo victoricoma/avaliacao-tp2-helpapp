@@ -117,7 +117,7 @@ namespace StockApp.API.Controllers
         /// <response code="404">Categoria não encontrada</response>
         /// <response code="401">Não autorizado</response>
         [HttpDelete("{id:int}", Name ="Delete Category")]
-        public async Task<ActionResult<CategoryDTO>> Detele(int id)
+        public async Task<ActionResult<CategoryDTO>> Delete(int id)
         {
             var category = await _categoryService.GetCategoryById(id);
             if(category == null) 
