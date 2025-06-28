@@ -12,5 +12,6 @@ namespace StockApp.Domain.Interfaces
         Task<Supplier?> Create(Supplier supplier);
         Task<Supplier?> Update(Supplier supplier);
         Task<Supplier?> Remove(Supplier supplier);
+        Task<IEnumerable<Supplier>> SearchAsync(string name, string contactEmail);
     }
 }

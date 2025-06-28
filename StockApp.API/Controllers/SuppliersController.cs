@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
+using StockApp.Domain.Entities;
+using StockApp.Domain.Interfaces;
 
 namespace StockApp.API.Controllers
 {
@@ -14,10 +16,12 @@ namespace StockApp.API.Controllers
     public class SuppliersController : ControllerBase
     {
         private readonly ISupplierService _supplierService;
+        private readonly ISupplierRepository _supplierRepository;
 
-        public SuppliersController(ISupplierService supplierService)
+        public SuppliersController(ISupplierService supplierService, ISupplierRepository supplierRepository)
         {
             _supplierService = supplierService;
+            _supplierRepository = supplierRepository;
         }
 
         /// <summary>
@@ -132,6 +136,21 @@ namespace StockApp.API.Controllers
             await _supplierService.Remove(id);
 
             return Ok(supplier);
+        }
+
+        /// <summary>
+        /// Busca fornecedores por nome e/ou email de contato
+        /// </summary>
+        /// <param name="name">Nome do fornecedor (opcional)</param>
+        /// <param name="contactEmail">Email de contato do fornecedor (opcional)</param>
+        /// <returns>Lista de fornecedores que correspondem aos critérios de busca</returns>
+        /// <response code="200">Retorna a lista de fornecedores encontrados</response>
+        /// <response code="401">Não autorizado</response>
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<Supplier>>> SearchSuppliers([FromQuery] string name, [FromQuery] string contactEmail)
+        {
+            var suppliers = await _supplierRepository.SearchAsync(name, contactEmail);
+            return Ok(suppliers);
         }
     }
 }
