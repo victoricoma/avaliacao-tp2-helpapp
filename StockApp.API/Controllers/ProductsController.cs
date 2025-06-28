@@ -16,18 +16,31 @@ namespace StockApp.API.Controllers;
 
 public class ProductsController : ControllerBase
 {
+    private readonly ICacheService _cache;
     private readonly IProductRepository _productRepository;
     private readonly IProductService _productService;
-    public ProductsController(IProductService productService, IProductRepository productRepository)
+    public ProductsController(IProductService productService, IProductRepository productRepository, ICacheService cache)
     {
         _productService = productService;
         _productRepository = productRepository;
+        _cache = cache;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAll()
     {
+        const string cacheKey = "products_all";
+
+        var cachedProducts = await _cache.GetAsync<List<ProductDTO>>(cacheKey);
+        if (cachedProducts != null)
+        {
+            return Ok(cachedProducts);
+        }
+
         var products = await _productService.GetProducts();
+
+        await _cache.SetAsync(cacheKey, products, TimeSpan.FromMinutes(10));
+
         return Ok(products);
     }
 
