@@ -155,4 +155,26 @@ public class ProductsController : ControllerBase
         await _productService.Remove(id);
         return Ok(product);
     }
+
+    /// <summary>
+    /// Atualiza vários produtos em massa
+    /// </summary>
+    /// <param name="bulkUpdateDto">DTO contendo a lista de produtos a serem atualizados</param>
+    /// <returns>Status da operação</returns>
+    /// <response code="200">Atualização realizada com sucesso</response>
+    /// <response code="400">Dados inválidos</response>
+    [HttpPut("bulk-update")]
+    public async Task<IActionResult> BulkUpdate([FromBody] BulkUpdateProductDTO bulkUpdateDto)
+    {
+        if (bulkUpdateDto?.Products == null || !bulkUpdateDto.Products.Any())
+            return BadRequest("Lista de produtos não pode ser vazia.");
+
+        foreach (var product in bulkUpdateDto.Products)
+        {
+            await _productService.Update(product);
+        }
+        // Opcional: Limpar cache relacionado
+        await _cache.RemoveAsync("products_all");
+        return Ok(new { message = "Produtos atualizados com sucesso." });
+    }
 }
