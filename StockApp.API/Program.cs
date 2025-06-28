@@ -1,3 +1,4 @@
+using StockApp.API.Middleware;
 using StockApp.Infra.IoC;
 using StockApp.Infra.Data.Identity;
 using StockApp.Domain.Interfaces;
@@ -14,8 +15,13 @@ internal class Program
         // Add services to the container.
         builder.Services.AddInfrastructureAPI(builder.Configuration);
 
-        
 
+        builder.Services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = builder.Configuration.GetConnectionString("Redis");
+
+            options.InstanceName = "StockApp";
+        });
 
         builder.Services.AddControllers();
 
@@ -53,7 +59,7 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        app.UseErrorHandlerMiddleware();
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
