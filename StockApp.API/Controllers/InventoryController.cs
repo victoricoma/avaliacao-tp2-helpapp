@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StockApp.API.Controllers
 {
+    [Authorize(Policy = "CanManageStock")]
     [Route("/api/[controller]")]
     [ApiController]
     public class InventoryController : ControllerBase
@@ -12,7 +14,7 @@ namespace StockApp.API.Controllers
         {
             _inventoryService = inventoryService;
         }
-
+        [Authorize(Policy = "CanManageStock")]
         [HttpPost("replenish-stock")]
         public async Task<IActionResult> ReplenishStock()
         {
