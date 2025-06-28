@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace StockApp.API.Controllers
 {
+    /// <summary>
+    /// Controlador responsável pelo rastreamento de entregas
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class DeliveryController : ControllerBase
@@ -15,6 +18,13 @@ namespace StockApp.API.Controllers
             _deliveryService = deliveryService;
         }
 
+        /// <summary>
+        /// Rastreia uma entrega pelo número de rastreamento
+        /// </summary>
+        /// <param name="trackingNumber">Número de rastreamento da entrega</param>
+        /// <returns>Informações da entrega</returns>
+        /// <response code="200">Retorna as informações da entrega</response>
+        /// <response code="404">Entrega não encontrada</response>
         [HttpGet("track-delivery/{trackingNumber}")]
         public async Task<IActionResult> TrackDelivery(string trackingNumber)
         {
