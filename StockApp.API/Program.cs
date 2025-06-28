@@ -1,3 +1,4 @@
+using StockApp.API.Middleware;
 using StockApp.Infra.IoC;
 
 internal class Program
@@ -29,7 +30,7 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        app.UseErrorHandlerMiddleware();
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
