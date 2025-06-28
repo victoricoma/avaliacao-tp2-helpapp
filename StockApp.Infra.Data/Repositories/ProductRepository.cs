@@ -62,5 +62,16 @@ namespace StockApp.Infra.Data.Repositories
                 .Where(p => p.Stock < threshold)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Product>> GetAllAsync()
+        {
+            return await _productContext.Products.ToListAsync();
+        }
+
+        public async Task UpdateAsync(Product product)
+        {
+            _productContext.Products.Update(product);
+            await _productContext.SaveChangesAsync();
+        }
     }
 }

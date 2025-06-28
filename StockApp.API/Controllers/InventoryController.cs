@@ -10,16 +10,26 @@ namespace StockApp.API.Controllers
     public class InventoryController : ControllerBase
     {
         private readonly IInventoryService _inventoryService;
-        public InventoryController(IInventoryService inventoryService)
+        private readonly IJustInTimeInventoryService _justInTimeInventoryService;
+        public InventoryController(IInventoryService inventoryService, IJustInTimeInventoryService justInTimeInventoryService)
         {
             _inventoryService = inventoryService;
+            _justInTimeInventoryService = justInTimeInventoryService;
         }
+
         [Authorize(Policy = "CanManageStock")]
         [HttpPost("replenish-stock")]
         public async Task<IActionResult> ReplenishStock()
         {
             await _inventoryService.ReplenishStockAsync();
-            return Ok("Reposição automática conluída");
+            return Ok("Reposição automática concluída");
+        }
+
+        [HttpPost("optimize")]
+        public async Task<IActionResult> OptimizeInventory()
+        {
+            await _justInTimeInventoryService.OptimizeInventoryAsync();
+            return Ok("Inventário otimizado com estratégia Just-in-Time");
         }
     }
 }

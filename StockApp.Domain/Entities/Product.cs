@@ -14,9 +14,11 @@ namespace StockApp.Domain.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public int Stock { get; set;}
+        public int Stock { get; set; }
+        public int MinimumStockLevel { get; set; }
         public string Image { get; set; }
         public int CategoryId { get; set; }
+
         #endregion
 
         public Product(string name, string description, decimal price, int stock, string image)
@@ -107,13 +109,18 @@ namespace StockApp.Domain.Entities
             DomainExceptionValidation.When(stock > 999999, "Invalid stock, maximum value is 999999.");
 
             // Validação da Imagem
-            DomainExceptionValidation.When(!string.IsNullOrEmpty(image) && image.Length > 250, 
+            DomainExceptionValidation.When(!string.IsNullOrEmpty(image) && image.Length > 250,
                 "Invalid image name, too long, maximum 250 characters.");
+
+            DomainExceptionValidation.When(MinimumStockLevel < 0, "Invalid MinimumStockLevel, negative value not allowed.");
+
+            DomainExceptionValidation.When(MinimumStockLevel > 999999, "Invalid MinimumStockLevel, maximum value is 999999.");
 
             // Validação da Categoria
             if (categoryId.HasValue)
             {
                 DomainExceptionValidation.When(categoryId.Value <= 0, "Invalid CategoryId, must be greater than zero.");
+
                 CategoryId = categoryId.Value;
             }
 
@@ -123,6 +130,7 @@ namespace StockApp.Domain.Entities
             Price = price;
             Stock = stock;
             Image = image;
+            MinimumStockLevel = 10; 
         }
     }
 }
