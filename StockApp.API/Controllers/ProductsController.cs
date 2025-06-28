@@ -135,4 +135,24 @@ public class ProductsController : ControllerBase
         await _productService.Update(productDto);
         return Ok(productDto);
     }
+
+    /// <summary>
+    /// Remove um produto pelo ID
+    /// </summary>
+    /// <param name="id">ID do produto</param>
+    /// <returns>Produto removido</returns>
+    /// <response code="200">Produto removido com sucesso</response>
+    /// <response code="404">Produto não encontrado</response>
+    /// <response code="401">Não autorizado</response>
+    [HttpDelete("{id:int}", Name = "DeleteProduct")]
+    public async Task<ActionResult<ProductDTO>> Delete(int id)
+    {
+        var product = await _productService.GetProductById(id);
+        if (product == null)
+        {
+            return NotFound("Product not found");
+        }
+        await _productService.Remove(id);
+        return Ok(product);
+    }
 }
