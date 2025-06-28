@@ -51,5 +51,9 @@ namespace StockApp.Application.Services
             var productEntity = _mapper.Map<Product>(productDto);
             await _productRepository.Update(productEntity);
         }
-    }
+        public async Task<IEnumerable<ProductDTO>> EstoqueBaixo(int limiteEstoque)
+        {
+            var produtoDTO = await _productRepository.GetProducts();
+            return _mapper.Map<IEnumerable<ProductDTO>>(produtoDTO.Where(p => p.Stock <= limiteEstoque);
+        }
 }
