@@ -48,6 +48,8 @@ Log.Logger = new LoggerConfiguration()
         builder.Services.AddInfrastructureAPI(builder.Configuration);
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        
+        // Configuração da autenticação JWT será feita mais abaixo
         builder.Services.AddScoped<ICacheService, CacheService>();
 
         builder.Services.AddControllers(options =>
