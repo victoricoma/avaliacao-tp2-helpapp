@@ -18,7 +18,7 @@ using StockApp.Application.Services;
 using StockApp.API.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Authorization;
 
-internal class Program
+public class Program
 {
     private static void Main(string[] args)
     {
