@@ -1,4 +1,4 @@
-using StockApp.Application.Interfaces;
+﻿using StockApp.Application.Interfaces;
 using StockApp.Infra.IoC;
 using StockApp.Infrastructure.Services;
 using StockApp.API.Infrastructure.Middlewares;
@@ -8,22 +8,25 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.OpenApi.Models;
+using StockApp.Domain.Interfaces;
+using StockApp.Infra.Data.Repositories;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
+
         builder.Logging.ClearProviders();
         builder.Logging.AddConsole();
         builder.Logging.AddDebug();
-        
-        // Add services to the container
-        builder.Services.AddInfrastructureAPI(builder.Configuration);
 
-        builder.Services.AddScoped<IUserService, UserService>();    
-        
+
+        builder.Services.AddInfrastructureAPI(builder.Configuration);
+        builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
         builder.Services.AddControllers(options =>
         {
             options.Filters.Add<GlobalExceptionFilter>();
@@ -51,8 +54,16 @@ internal class Program
         });
 
 
-    builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+            {
+                Title = "StockApp API",
+                Version = "v1"
+            });
+
+        });
 
         var jwtSettings = builder.Configuration.GetSection("Jwt");
 
@@ -81,7 +92,7 @@ internal class Program
             options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
         });
 
-         var app = builder.Build();
+        var app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -91,11 +102,11 @@ internal class Program
         }
 
         app.UseHttpsRedirection();
-        
+
         app.UseCors("CorsPolicy");
 
         app.UseMiddleware<ErrorHandlingMiddleware>();
-        
+
         app.UseRouting();
 
         app.UseAuthentication();
