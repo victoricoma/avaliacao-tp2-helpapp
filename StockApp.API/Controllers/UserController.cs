@@ -26,7 +26,7 @@ namespace StockApp.API.Controllers
                 Role = userRegisterDTO.Role
             };
            
-             await _userRepository.AddAsync(user);
+             await _userRepository.AddAsync(user.Username , user.Password);
             return Ok(user);
         }
     }

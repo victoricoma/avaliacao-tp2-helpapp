@@ -27,7 +27,7 @@ namespace StockApp.Infra.Data.Identity
 
         public async Task<TokenResponseDTO> AuthenticateAsync(string username, string password)
         {
-            var user = await _userRepository.GetByUsernameAsync(username);
+            var user = await _userRepository.GetByUsernameAsync(username , password);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
             {
@@ -35,7 +35,7 @@ namespace StockApp.Infra.Data.Identity
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Secret"]);
+            var key = Encoding.ASCII.GetBytes(_configuration["JwtSettings:SecretKey"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
