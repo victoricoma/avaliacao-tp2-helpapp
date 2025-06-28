@@ -7,6 +7,7 @@ using StockApp.Application.Mappings;
 using StockApp.Application.Services;
 using StockApp.Domain.Interfaces;
 using StockApp.Infra.Data.Context;
+using StockApp.Infra.Data.Identity;
 using StockApp.Infra.Data.Repositories;
 
 
@@ -24,9 +25,11 @@ namespace StockApp.Infra.IoC
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ISupplierService, SupplierService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 
