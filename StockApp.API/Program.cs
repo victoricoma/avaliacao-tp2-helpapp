@@ -54,6 +54,7 @@ internal class Program
             builder.Services.AddScoped<IInventoryService, InventoryService>();
             builder.Services.AddScoped<ICacheService, CacheService>();
             builder.Services.AddScoped<IMfaService, MfaService>();
+            builder.Services.AddScoped<IJustInTimeInventoryService, JustInTimeInventoryService>();
 
             builder.Services.AddControllers(options =>
             {

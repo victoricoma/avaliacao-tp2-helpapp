@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using StockApp.Infra.Data.EntityConfiguration;
+using StockApp.Infra.Data.Services;
 
 namespace StockApp.Infra.IoC
 {
@@ -38,6 +39,9 @@ namespace StockApp.Infra.IoC
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IInventoryService, InventoryService>();
+            services.AddScoped<IJustInTimeInventoryService, JustInTimeInventoryService>();
+
 
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
             
