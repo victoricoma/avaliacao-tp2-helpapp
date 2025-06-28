@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +30,12 @@ namespace StockApp.Infra.IoC
 
             var myhandlers = AppDomain.CurrentDomain.Load("StockApp.Application");
             services.AddMediatR(myhandlers);
+
+            // Registrar o serviço de entrega com HttpClient
+            services.AddHttpClient<IDeliveryService, DeliveryService>(client =>
+            {
+                client.BaseAddress = new Uri("https://api.delivery.com/");
+            });
 
             return services;
         }
