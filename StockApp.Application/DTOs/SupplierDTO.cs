@@ -1,7 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace StockApp.Application.DTOs
 {
+    /// <summary>
+    /// DTO para fornecedor
+    /// </summary>
     public class SupplierDTO
     {
         public int Id { get; set; }
@@ -18,5 +21,15 @@ namespace StockApp.Application.DTOs
         [Required(ErrorMessage = "The Phone Number is required.")]
         [Phone(ErrorMessage = "Invalid Phone Number format.")]
         public string? PhoneNumber { get; set; }
+        
+        /// <summary>
+        /// Pontuação média de avaliação do fornecedor
+        /// </summary>
+        public int? EvaluationScore { get; set; }
+        
+        /// <summary>
+        /// Indica se o fornecedor possui contrato ativo
+        /// </summary>
+        public bool? HasActiveContract { get; set; }
     }
 }
