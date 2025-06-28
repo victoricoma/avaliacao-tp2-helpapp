@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
 
 namespace StockApp.API.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("/api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
