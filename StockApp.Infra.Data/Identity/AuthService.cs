@@ -22,7 +22,7 @@ namespace StockApp.Infra.Data.Identity
             _configuration = configuration;
         }
 
-        public async Task<TokenResponseDto> AuthenticateAsync(string username, string password)
+        public async Task<TokenResponseDTO> AuthenticateAsync(string username, string password)
         {
             var user = await _userRepository.GetByUsernameAsync(username);
             if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
@@ -43,7 +43,7 @@ namespace StockApp.Infra.Data.Identity
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return new TokenResponseDto
+            return new TokenResponseDTO
             {
                 Token = tokenHandler.WriteToken(token),
                 Expiration = token.ValidTo
