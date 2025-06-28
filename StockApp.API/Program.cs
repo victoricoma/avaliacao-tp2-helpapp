@@ -21,97 +21,97 @@ internal class Program
     private static void Main(string[] args)
     {
         // Configurar Serilog a partir do appsettings.json
-var configuration = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json")
-    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
-    .Build();
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+            .Build();
 
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(configuration)
-    .CreateLogger();
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(configuration)
+            .CreateLogger();
 
         try
         {
             Log.Information("Iniciando aplicação StockApp");
-            
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Configurar Serilog como provider de logging
             builder.Host.UseSerilog();
 
-        builder.Services.AddStackExchangeRedisCache(options =>
-        {
-            options.Configuration = builder.Configuration.GetConnectionString("Redis");
-            options.InstanceName = "StockApp";
-        });
-
-        builder.Services.AddInfrastructureAPI(builder.Configuration);
-        builder.Services.AddScoped<IUserService, UserService>();
-        builder.Services.AddScoped<IProductRepository, ProductRepository>();
-        builder.Services.AddScoped<IInventoryService, InventoryService>();
-        
-        builder.Services.AddScoped<ICacheService, CacheService>();
-
-        builder.Services.AddControllers(options =>
-        {
-            options.Filters.Add<GlobalExceptionFilter>();
-        });
-
-        // Cors
-
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("CorsPolicy", policy =>
+            builder.Services.AddStackExchangeRedisCache(options =>
             {
-                if (builder.Environment.IsDevelopment())
-                {
-                    policy.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                }
-                else
-                {
-                    policy.WithOrigins("http://localhost:3000")
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                }
-            });
-        });
-
-
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(c =>
-        {
-            c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-            {
-                Title = "StockApp API",
-                Version = "v1",
-                Description = "API para gerenciamento de estoque",
-                Contact = new OpenApiContact
-                {
-                    Name = "StockApp Team",
-                    Email = "support@stockapp.com"
-                }
+                options.Configuration = builder.Configuration.GetConnectionString("Redis");
+                options.InstanceName = "StockApp";
             });
 
-           
-            var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            c.IncludeXmlComments(xmlPath);
+            builder.Services.AddInfrastructureAPI(builder.Configuration);
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IInventoryService, InventoryService>();
+            builder.Services.AddScoped<ICacheService, CacheService>();
+            builder.Services.AddScoped<IMfaService, MfaService>();
 
-           
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            builder.Services.AddControllers(options =>
             {
-                Description = "JWT Authorization header usando o esquema Bearer. Exemplo: \"Authorization: Bearer {token}\"",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer"
+                options.Filters.Add<GlobalExceptionFilter>();
             });
 
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            // Cors
+
+            builder.Services.AddCors(options =>
             {
+                options.AddPolicy("CorsPolicy", policy =>
+                {
+                    if (builder.Environment.IsDevelopment())
+                    {
+                        policy.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    }
+                    else
+                    {
+                        policy.WithOrigins("http://localhost:3000")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    }
+                });
+            });
+
+
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "StockApp API",
+                    Version = "v1",
+                    Description = "API para gerenciamento de estoque",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "StockApp Team",
+                        Email = "support@stockapp.com"
+                    }
+                });
+
+
+                var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header usando o esquema Bearer. Exemplo: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
                 {
                     new OpenApiSecurityScheme
                     {
@@ -123,60 +123,60 @@ Log.Logger = new LoggerConfiguration()
                     },
                     new string[] {}
                 }
+                });
             });
-        });
 
-        var jwtSettings = builder.Configuration.GetSection("Jwt");
+            var jwtSettings = builder.Configuration.GetSection("Jwt");
 
-        builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-        })
-        .AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
+            builder.Services.AddAuthentication(options =>
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtSettings["Issuer"],
-                ValidAudience = jwtSettings["Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]))
-            };
-        });
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-        builder.Services.AddAuthorization(options =>
-        {
-            options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-        });
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings["Issuer"],
+                    ValidAudience = jwtSettings["Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]))
+                };
+            });
 
-        var app = builder.Build();
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+            });
 
-        
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+            var app = builder.Build();
 
-        app.UseHttpsRedirection();
 
-        app.UseCors("CorsPolicy");
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
 
-        app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseHttpsRedirection();
 
-        app.UseRouting();
+            app.UseCors("CorsPolicy");
 
-        app.UseAuthentication();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
-        app.UseAuthorization();
+            app.UseRouting();
 
-        
+            app.UseAuthentication();
+
+            app.UseAuthorization();
+
+
             app.UseMiddleware<RequestLoggingMiddleware>();
-            
+
             app.UseSerilogRequestLogging(options =>
             {
                 options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
@@ -194,10 +194,10 @@ Log.Logger = new LoggerConfiguration()
                 };
             });
 
-        app.MapControllers();
+            app.MapControllers();
 
-        Log.Information("Aplicação StockApp iniciada com sucesso");
-        app.Run();
+            Log.Information("Aplicação StockApp iniciada com sucesso");
+            app.Run();
         }
         catch (Exception ex)
         {
