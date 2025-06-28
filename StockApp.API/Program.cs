@@ -14,8 +14,13 @@ internal class Program
         // Add services to the container.
         builder.Services.AddInfrastructureAPI(builder.Configuration);
 
-        
 
+        builder.Services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = builder.Configuration.GetConnectionString("Redis");
+
+            options.InstanceName = "StockApp";
+        });
 
         builder.Services.AddControllers();
 
