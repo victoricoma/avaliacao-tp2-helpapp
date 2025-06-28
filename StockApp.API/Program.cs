@@ -76,9 +76,44 @@ Log.Logger = new LoggerConfiguration()
             c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
             {
                 Title = "StockApp API",
-                Version = "v1"
+                Version = "v1",
+                Description = "API para gerenciamento de estoque",
+                Contact = new OpenApiContact
+                {
+                    Name = "StockApp Team",
+                    Email = "support@stockapp.com"
+                }
             });
 
+            // Incluir comentários XML
+            var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments(xmlPath);
+
+            // Configuração para JWT no Swagger
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header usando o esquema Bearer. Exemplo: \"Authorization: Bearer {token}\"",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer"
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
+            });
         });
 
         var jwtSettings = builder.Configuration.GetSection("Jwt");

@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
 
 namespace StockApp.API.Controllers
 {
+    /// <summary>
+    /// Controlador responsável pelo registro de usuários
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
@@ -15,6 +18,14 @@ namespace StockApp.API.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// Registra um novo usuário no sistema
+        /// </summary>
+        /// <param name="user">Dados do usuário a ser registrado</param>
+        /// <returns>Resultado do registro</returns>
+        /// <response code="200">Usuário registrado com sucesso</response>
+        /// <response code="400">Dados inválidos</response>
+        /// <response code="409">Conflito - usuário já existe</response>
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegisterDto user)
         {
