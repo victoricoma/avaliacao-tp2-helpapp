@@ -1,5 +1,6 @@
 using StockApp.Application.Interfaces;
 using StockApp.Infra.IoC;
+using StockApp.Infra.Data.Services;
 using StockApp.Infrastructure.Services;
 using StockApp.API.Infrastructure.Middlewares;
 using StockApp.API.Infrastructure.Filters;
@@ -38,10 +39,16 @@ Log.Logger = new LoggerConfiguration()
             // Configurar Serilog como provider de logging
             builder.Host.UseSerilog();
 
+        builder.Services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = builder.Configuration.GetConnectionString("Redis");
+            options.InstanceName = "StockApp";
+        });
 
         builder.Services.AddInfrastructureAPI(builder.Configuration);
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        builder.Services.AddScoped<ICacheService, CacheService>();
 
         builder.Services.AddControllers(options =>
         {
