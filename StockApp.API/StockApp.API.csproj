@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StockApp.Infra.Data\StockApp.Infra.Data.csproj" />
     <ProjectReference Include="..\StockApp.Infra.IoC\StockApp.Infra.IoC.csproj" />
   </ItemGroup>
 
