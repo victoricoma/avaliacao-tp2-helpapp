@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Serilog;
 using Serilog.Context;
+using StockApp.Domain.Exceptions;
 
 namespace StockApp.API.Infrastructure.Middlewares
 {
@@ -48,15 +49,31 @@ namespace StockApp.API.Infrastructure.Middlewares
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-            var responde = new
+            
+            var statusCode = HttpStatusCode.InternalServerError;
+            var message = "Erro interno. Tente novamente mais tarde.";
+            
+            if (exception is AuthenticationException)
+            {
+                statusCode = HttpStatusCode.Unauthorized;
+                message = "Erro de autenticação";
+            }
+            else if (exception is AuthorizationException)
+            {
+                statusCode = HttpStatusCode.Forbidden;
+                message = "Erro de autorização";
+            }
+            
+            context.Response.StatusCode = (int)statusCode;
+            
+            var response = new
             {
                 StatusCode = context.Response.StatusCode,
-                Message = "Erro interno. Tente novamente mais tarde.",
-                Detailded = exception.Message
+                Message = message,
+                Detailed = exception.Message
             };
-            return context.Response.WriteAsync(JsonSerializer.Serialize(responde));
+            
+            return context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
     }
 }

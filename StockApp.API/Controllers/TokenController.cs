@@ -27,5 +27,7 @@ namespace StockApp.API.Controllers
 
             return Ok(token);
         }
+        
+
     }
 }
