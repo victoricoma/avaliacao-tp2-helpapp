@@ -164,6 +164,38 @@ public class Program
 
             builder.Services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
 
+            // Configuração do Rate Limiting
+            builder.Services.AddRateLimiting(options =>
+            {
+                // Política padrão: 100 requisições por minuto
+                options.DefaultPolicy = new RateLimitPolicy
+                {
+                    MaxRequests = 100,
+                    Window = TimeSpan.FromMinutes(1)
+                };
+
+                // Operações de leitura: 200 requisições por minuto
+                options.ReadOperationsPolicy = new RateLimitPolicy
+                {
+                    MaxRequests = 200,
+                    Window = TimeSpan.FromMinutes(1)
+                };
+
+                // Operações de escrita: 50 requisições por minuto
+                options.WriteOperationsPolicy = new RateLimitPolicy
+                {
+                    MaxRequests = 50,
+                    Window = TimeSpan.FromMinutes(1)
+                };
+
+                // Endpoints de autenticação: 10 requisições por 5 minutos
+                options.AuthEndpointsPolicy = new RateLimitPolicy
+                {
+                    MaxRequests = 10,
+                    Window = TimeSpan.FromMinutes(5)
+                };
+            });
+
             //Registro do DeliveryService para ser injetado via HttpClient//
 
             builder.Services.AddHttpClient<IDeliveryService, DeliveryServiceImpl>()
@@ -184,6 +216,9 @@ public class Program
             app.UseHttpsRedirection();
 
             app.UseCors("CorsPolicy");
+
+            // Rate Limiting deve vir antes da autenticação
+            app.UseRateLimiting();
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
