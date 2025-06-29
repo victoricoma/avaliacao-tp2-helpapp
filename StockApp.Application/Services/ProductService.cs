@@ -37,15 +37,15 @@ namespace StockApp.Application.Services
         public async Task<PagedResult<ProductDTO>> GetProductsPaged(PaginationParameters paginationParameters)
         {
             var (products, totalCount) = await _productRepository.GetProductsPaged(
-                paginationParameters.PageNumber, 
+                paginationParameters.PageNumber,
                 paginationParameters.PageSize);
-            
+
             var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
-            
+
             return new PagedResult<ProductDTO>(
-                productDTOs, 
-                paginationParameters.PageNumber, 
-                paginationParameters.PageSize, 
+                productDTOs,
+                paginationParameters.PageNumber,
+                paginationParameters.PageSize,
                 totalCount);
         }
 

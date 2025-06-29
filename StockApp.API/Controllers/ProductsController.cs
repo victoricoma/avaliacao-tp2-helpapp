@@ -65,7 +65,7 @@ public class ProductsController : ControllerBase
         var pagedProducts = await _productService.GetProductsPaged(paginationParameters);
         return Ok(pagedProducts);
     }
- 
+
     /// <summary>
     /// Obtém um produto específico pelo ID
     /// </summary>
@@ -176,5 +176,35 @@ public class ProductsController : ControllerBase
         // Opcional: Limpar cache relacionado
         await _cache.RemoveAsync("products_all");
         return Ok(new { message = "Produtos atualizados com sucesso." });
+    }
+
+    [HttpPost("import")]
+    public async Task<IActionResult> ImportFromCsv(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest("Arquivo inválido.");
+
+        using (var stream = new StreamReader(file.OpenReadStream()))
+        {
+            while (!stream.EndOfStream)
+            {
+                var line = await stream.ReadLineAsync();
+                var values = line.Split(',');
+
+                var productDTO = new ProductDTO
+                {
+                    Name = values[0],
+                    Description = values[1],
+                    Price = decimal.Parse(values[2]),
+                    Stock = int.Parse(values[3])
+                };
+
+                await _productService.Add(productDTO);
+            }
+        }
+
+        await _cache.RemoveAsync("products_all");
+
+        return Ok(new { message = "Importação concluída com sucesso." });
     }
 }
