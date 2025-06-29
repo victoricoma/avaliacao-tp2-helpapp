@@ -65,6 +65,32 @@ public class ProductsController : ControllerBase
         var pagedProducts = await _productService.GetProductsPaged(paginationParameters);
         return Ok(pagedProducts);
     }
+
+    [HttpGet("search")]
+    public async Task<ActionResult<PagedResult<ProductDTO>>> SearchProducts([FromQuery] ProductSearchDTO searchParameters)
+    {
+        if (!searchParameters.IsValid())
+        {
+            var errors = searchParameters.GetValidationErrors();
+            return BadRequest(new { errors });
+        }
+
+        var filteredProducts = await _productService.GetProductsWithFiltersAsync(searchParameters);
+        return Ok(filteredProducts);
+    }
+
+    [HttpPost("search")]
+    public async Task<ActionResult<PagedResult<ProductDTO>>> SearchProductsPost([FromBody] ProductSearchDTO searchParameters)
+    {
+        if (!searchParameters.IsValid())
+        {
+            var errors = searchParameters.GetValidationErrors();
+            return BadRequest(new { errors });
+        }
+
+        var filteredProducts = await _productService.GetProductsWithFiltersAsync(searchParameters);
+        return Ok(filteredProducts);
+    }
  
     /// <summary>
     /// Obtém um produto específico pelo ID
