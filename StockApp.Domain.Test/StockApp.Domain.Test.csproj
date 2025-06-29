@@ -22,7 +22,7 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
+  
     <ProjectReference Include="..\StockApp.API\StockApp.API.csproj" />
     <ProjectReference Include="..\StockApp.Application\StockApp.Application.csproj" />
     <ProjectReference Include="..\StockApp.Domain\StockApp.Domain.csproj" />
