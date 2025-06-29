@@ -17,6 +17,9 @@ using Serilog.Events;
 using StockApp.Application.Services;
 using StockApp.API.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using DeliveryServiceImpl = StockApp.Infra.Data.Services.DeliveryService;
+using StockApp.Application.Interfaces;
+using System.Runtime.ConstrainedExecution;
 
 public class Program
 {
@@ -160,6 +163,14 @@ public class Program
             });
 
             builder.Services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
+
+            //Registro do DeliveryService para ser injetado via HttpClient//
+
+            builder.Services.AddHttpClient<IDeliveryService, DeliveryServiceImpl>()
+                .ConfigureHttpClient(client =>
+            {
+                client.BaseAddress = new Uri("https://api.delivery.com/");
+            });
 
             var app = builder.Build();
 
