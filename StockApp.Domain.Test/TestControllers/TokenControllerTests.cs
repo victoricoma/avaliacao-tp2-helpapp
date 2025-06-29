@@ -42,7 +42,11 @@ namespace StockApp.Domain.Test.TestControllers
 
             var result = controller.Login(loginDto);
 
-            Assert.IsType<UnauthorizedResult>(result);
+            Assert.IsType<UnauthorizedObjectResult>(result);
+
+            var unauthorizedResult = result as UnauthorizedObjectResult;
+            Assert.NotNull(unauthorizedResult);
+            Assert.Equal("Invalid credentials", unauthorizedResult.Value);
         }
     }
 }
