@@ -42,7 +42,7 @@ namespace StockApp.API.Controllers
         public IActionResult ValidateOtp([FromBody] OtpRequest request)
         {
             var isValid = _mfaService.ValidateOtp(request.UserOtp, request.StoredOtp);
-            return isValid ? Ok("OTP válido") : BadRequest("OTP inválido");
+            return isValid ? Ok("OTP vï¿½lido") : BadRequest("OTP invï¿½lido");
         }
 
         public class OtpRequest
