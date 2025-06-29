@@ -6,6 +6,8 @@ using StockApp.Infra.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using StockApp.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 internal class Program
 {
     private static void Main(string[] args)
@@ -50,6 +52,15 @@ internal class Program
                 IssuerSigningKey = new SymmetricSecurityKey(key)
             };
         });
+
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("CanManageProducts", policy =>
+            policy.Requirements.Add( new 
+            ClaimsAuthorizationRequirement("Permission", "CanManageProducts")));
+        });
+        builder.Services.AddSingleton<IAuthorizationHandler,
+            ClaimsAuthorizationHandler>();
 
         var app = builder.Build();
 
