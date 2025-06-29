@@ -54,6 +54,30 @@ namespace StockApp.Application.Services
         public async Task<IEnumerable<ProductDTO>> EstoqueBaixo(int limiteEstoque)
         {
             var produtoDTO = await _productRepository.GetProducts();
-            return _mapper.Map<IEnumerable<ProductDTO>>(produtoDTO.Where(p => p.Stock <= limiteEstoque);
+            return _mapper.Map<IEnumerable<ProductDTO>>(produtoDTO.Where(p => p.Stock <= limiteEstoque));
         }
+
+        public async Task BulkUpdateAsync(List<ProductDTO> productsDTO)
+        {
+              if (GetProducts == null || !productsDTO.Any())
+            {
+                throw new ArgumentException("Product list null or invalid", nameof(productsDTO));
+            }
+
+                foreach (var productDto in productsDTO)
+            {
+                var existingProduct = await _productRepository.GetById(productDto.Id);
+                if (existingProduct != null)
+                {
+                    existingProduct.Name = productDto.Name;
+                    existingProduct.Description = productDto.Description;
+                    existingProduct.Price = productDto.Price;
+                    existingProduct.Stock = productDto.Stock;
+                    existingProduct.Image = productDto.Image;
+                    existingProduct.CategoryId = productDto.CategoryId;
+                }
+            }
+        }
+
+    }
 }

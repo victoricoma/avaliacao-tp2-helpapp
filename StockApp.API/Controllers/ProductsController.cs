@@ -3,6 +3,7 @@ using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
 using StockApp.Application.Services;
 
+
 namespace StockApp.API.Controllers
 {
     [Route("api/[controller]")]
@@ -10,7 +11,7 @@ namespace StockApp.API.Controllers
     public class ProductsController : Controller
     {
         private readonly IProductService _productService;
-        public ProductsController(IProductService productService)
+         public ProductsController(IProductService productService)
         {
             _productService = productService;
         }
@@ -25,53 +26,65 @@ namespace StockApp.API.Controllers
             }
             return Ok(produtos);
         }
-        [HttpGet("{id}", Name = "GetProduct")]
+        [HttpGet("{id}",Name = "GetProduct")]
         public async Task<ActionResult<ProductDTO>> Get(int id)
         {
             var produto = await _productService.GetProductById(id);
             if (produto == null)
             {
-                return NotFound("Product not found");
+               return NotFound("Product not found");
             }
             return Ok(produto);
         }
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] ProductDTO productDTO)
         {
-            if (productDTO == null)
-                return BadRequest("Data Invalid");
+           if (productDTO == null)
+                 return BadRequest("Data Invalid");
 
-            await _productService.Add(productDTO);
+              await _productService.Add(productDTO);
 
-            return new CreatedAtRouteResult("GetProduct",
-                new {id = productDTO.Id }, productDTO);
+             return new CreatedAtRouteResult("GetProduct",
+                 new {id = productDTO.Id }, productDTO);
         }
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] ProductDTO productDTO)
         {
             if (id != productDTO.Id)
             {
-                return BadRequest("Data invalid");
+                 return BadRequest("Data invalid");
             }
             if (productDTO == null)
-                return BadRequest("Data invalid");
-            await _productService.Update(productDTO);
-            return Ok(productDTO);
+                 return BadRequest("Data invalid");
+             await _productService.Update(productDTO);
+             return Ok(productDTO);
         }
 
 
 
 
-        [HttpGet("lowstock" , Name = "GetLowStockProducts")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetLowStockProducts(int limiteEstoque)
+        [HttpGet("lowstock" ,Name = "GetLowStockProducts")]
+         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetLowStockProducts(int limiteEstoque)
         {
-            var produtoDTO = await _productService.EstoqueBaixo(limiteEstoque);
+             var produtoDTO = await _productService.EstoqueBaixo(limiteEstoque);
             if (produtoDTO == null)
-            {
+             {
                 return NotFound("Products not found");
-            }
+             }
             
             return Ok(produtoDTO);
+        }
+
+        [HttpPut("bulk-update",Name ="BulkUpdateProducts")]
+        public async Task<ActionResult> BulkUpdate([FromBody] List<ProductDTO> productsDTO)
+        {
+            if (productsDTO == null || !productsDTO.Any())
+            {
+                return BadRequest("No products to update");
+            }
+            
+                await _productService.BulkUpdateAsync(productsDTO);
+            return Ok(productsDTO);
         }
     }
 }
