@@ -11,6 +11,9 @@ namespace StockApp.Application.Interfaces
     {
         Task<IEnumerable<ProductDTO>> GetProducts();
         Task<PagedResult<ProductDTO>> GetProductsPaged(PaginationParameters paginationParameters);
+        
+        Task<PagedResult<ProductDTO>> GetProductsWithFiltersAsync(ProductSearchDTO searchParameters);
+        
         Task<ProductDTO> GetProductById(int? id);
         Task Add(ProductDTO productDto);
         Task Update(ProductDTO productDto);

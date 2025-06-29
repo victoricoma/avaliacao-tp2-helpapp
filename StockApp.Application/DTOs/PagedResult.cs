@@ -12,6 +12,9 @@ namespace StockApp.Application.DTOs
         public int TotalPages => (int)Math.Ceiling((double)TotalRecords / PageSize);
         public bool HasNextPage => PageNumber < TotalPages;
         public bool HasPreviousPage => PageNumber > 1;
+        
+        public int TotalCount => TotalRecords;
+        public int CurrentPage => PageNumber;
 
         public PagedResult()
         {
