@@ -2,6 +2,7 @@ using System;
 
 namespace StockApp.Application.DTOs
 {
+    //  Classe criada para representar os dados que recebo da API de rastreamento.//
     public class DeliveryInfoDTO
     {
         public string TrackingNumber { get; set; }
