@@ -49,6 +49,33 @@ namespace StockApp.Application.Services
                 totalCount);
         }
 
+        public async Task<PagedResult<ProductDTO>> GetProductsWithFiltersAsync(ProductSearchDTO searchParameters)
+        {
+            var filters = searchParameters.Filters;
+            
+            var (products, totalCount) = await _productRepository.GetProductsWithFiltersAsync(
+                searchParameters.PageNumber,
+                searchParameters.PageSize,
+                filters.Name,
+                filters.Description,
+                filters.CategoryId,
+                filters.MinPrice,
+                filters.MaxPrice,
+                filters.MinStock,
+                filters.MaxStock,
+                filters.IsLowStock,
+                filters.SortBy,
+                filters.SortDirection);
+            
+            var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
+            
+            return new PagedResult<ProductDTO>(
+                productDTOs, 
+                searchParameters.PageNumber, 
+                searchParameters.PageSize, 
+                totalCount);
+        }
+
         public async Task<ProductDTO> GetProductById(int? id)
         {
             var productEntity = _productRepository.GetById(id);

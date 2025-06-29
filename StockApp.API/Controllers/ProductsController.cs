@@ -66,6 +66,18 @@ public class ProductsController : ControllerBase
         return Ok(pagedProducts);
     }
 
+    [HttpGet("search")]
+    public async Task<ActionResult<PagedResult<ProductDTO>>> SearchProducts([FromQuery] ProductSearchDTO searchParameters)
+    {
+        if (!searchParameters.IsValid())
+        {
+            var errors = searchParameters.GetValidationErrors();
+            return BadRequest(new { errors });
+        }
+
+        var filteredProducts = await _productService.GetProductsWithFiltersAsync(searchParameters);
+        return Ok(filteredProducts);
+    }
     /// <summary>
     /// Obtém um produto específico pelo ID
     /// </summary>
