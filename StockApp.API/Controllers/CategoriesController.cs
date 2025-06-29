@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
+using StockApp.Domain.Entities;
+using StockApp.Domain.Interfaces;
+using System.Linq;
 
 namespace StockApp.API.Controllers
 {
@@ -9,10 +12,12 @@ namespace StockApp.API.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
+        private readonly IProductRepository _productRepository;
 
-        public CategoriesController(ICategoryService categoryService)
+        public CategoriesController(ICategoryService categoryService, IProductRepository productRepository)
         {
             _categoryService = categoryService;
+            _productRepository = productRepository;
         }
 
         [HttpGet(Name ="GetCategories")]
@@ -77,6 +82,24 @@ namespace StockApp.API.Controllers
             await _categoryService.Remove(id);
 
             return Ok(category);
+        }
+
+        [HttpPost("compare", Name = "CompareProducts")]
+        public async Task<ActionResult<IEnumerable<Product>>> CompareProducts([FromBody] List<int> productIds)
+        {
+            var products = await _productRepository.GetByIdsAsync(productIds);
+            if (products == null || !products.Any())
+            {
+                return NotFound("Products not found.");
+            }
+            return Ok(products);
+        }
+
+        [HttpPost("sync-erp")]
+        public async Task<IActionResult> SyncErpData([FromServices] IErpIntegrationService erpService)
+        {
+            await erpService.SyncDataAsync();
+            return Ok("Sincronização com ERP concluída");
         }
     }
 }

@@ -2,12 +2,18 @@
 using StockApp.Domain.Interfaces;
 using StockApp.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace StockApp.Infra.Data.Repositories
 {
     public class ProductRepository : IProductRepository
     {
         ApplicationDbContext _productContext;
+
+        public async Task<IEnumerable<Product>> GetByIdsAsync (IEnumerable<int> ids)
+        {
+            return await _productContext.Products.Where( p => ids.Contains(p.Id)).ToListAsync();
+        }
         public ProductRepository(ApplicationDbContext context)
         {
             _productContext = context;
